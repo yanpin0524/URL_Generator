@@ -1,1 +1,36 @@
-<h1> index </h1>
+<main class="d-flex align-items-center">
+  <div class="card" style="width: 700px; height: 547;">
+    <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/16716/ExportedContentImage_00.png"
+        class="card-img-top p-4 mx-auto" style="width: 360px;">
+    <div class="card-body">
+      <form id="url-form" action="/" method="post" class="text-center" novalidate>
+        <div class="" style="height: 100px;">
+          <input type="url" class="form-control" id="url" name="url" placeholder="Input URL here" required>
+          <div class="valid-feedback text-end"> <p class="me-1">Looks good!</p> </div>
+          <div class="invalid-feedback text-end"> <p class="me-1">Please enter URL</p> </div>
+        </div>
+        <button id="url-submit" type="submit" class="btn btn-primary">Shorten</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+  const form = document.querySelector('form')
+  const submitBtn = document.querySelector('#url-submit')
+
+  submitBtn.addEventListener('click', (event) => {
+    form.classList.add('was-validated')
+    console.log('hi')
+  })
+
+  form.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+  })
+</script>
+
+{{!-- 為什麼 handlebars 用 script 從外部引入的js檔案不會執行?? --}}
+{{!-- <script src="../inputVerify.js"></script> --}}
