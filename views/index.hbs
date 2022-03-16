@@ -1,15 +1,32 @@
 <main class="d-flex align-items-center">
   <div class="card" style="width: 700px; height: 547;">
     <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/16716/ExportedContentImage_00.png"
-        class="card-img-top p-4 mx-auto" style="width: 360px;">
+      class="card-img-top p-4 mx-auto" style="width: 360px;">
     <div class="card-body">
       <form id="url-form" action="/" method="post" class="text-center" novalidate>
         <div class="" style="height: 100px;">
-          <input type="url" class="form-control" id="url" name="url" placeholder="Input URL here" required>
-          <div class="valid-feedback text-end"> <p class="me-1">Looks good!</p> </div>
-          <div class="invalid-feedback text-end"> <p class="me-1">Please enter URL</p> </div>
+          <input type="url" class="form-control" id="url" name="url" placeholder="Input URL here" required value="{{content.url}}" {{#if content}}disabled="disabled"{{/if}}>
+          <div class="valid-feedback text-end">
+            <p class="me-1">Looks good!</p>
+          </div>
+          <div class="invalid-feedback text-end">
+            <p class="me-1">Please enter URL</p>
+          </div>
         </div>
-        <button id="url-submit" type="submit" class="btn btn-primary">Shorten</button>
+        {{#if content}}
+        <div class="mb-1 py-1 bg-primary bg-opacity-25 rounded d-flex justify-content-between" style="margin-top: -25px">
+          <div class="ms-3 align-self-center">
+            <p class="d-inline">Your short URL：</p>
+            <a id="short-URL" href="/{{content.garbled}}">http://localhost:3000/{{content.garbled}}</a>
+          </div>
+          <button id="copy" type="button" class="btn btn-primary btn-sm me-1" onclick="copyFun('short-URL')">Copy</button>
+        </div>
+        {{/if}}
+        {{#if content}}
+          <a href="/" class="btn btn-primary">back</a>
+        {{else}}
+          <button id="url-submit" type="submit" class="btn btn-primary">Shorten</button>
+        {{/if}}
       </form>
     </div>
   </div>
@@ -30,6 +47,13 @@
       event.stopPropagation()
     }
   })
+</script>
+<script>
+  function copyFun(id) {
+      const target = document.getElementById(id)
+      window.getSelection().selectAllChildren(target)
+      document.execCommand("Copy")
+    }
 </script>
 
 {{!-- 為什麼 handlebars 用 script 從外部引入的js檔案不會執行?? --}}
