@@ -27,6 +27,7 @@ router.post('/', (req, res) => {
   URL.findOne({ url: content.url })
     .lean()
     .then((item) => {
+      // 輸入相同網址時，回傳一樣的縮址。
       if (item) {
         console.log(item)
         return res.render('index', { content: item })
