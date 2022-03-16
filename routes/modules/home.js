@@ -10,35 +10,40 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let garbled = generateGarbled()
 
-  // 重複亂碼過濾
-  URL.findOne({ garbled: garbled }).lean().lean((item) => {
-    if (!item) { return }
-
-    while (garbled === item) {
-      garbled = generateGarbled()
-    }
-  })
-
-  const content = {
-    garbled: garbled,
-    url: req.body.url
-  }
-
-  URL.findOne({ url: content.url })
+  // 過濾掉重複的亂碼
+  URL.findOne({ garbled: garbled })
     .lean()
     .then((item) => {
-      // 輸入相同網址時，回傳一樣的縮址。
-      if (item) {
-        console.log(item)
-        return res.render('index', { content: item })
+      if (!item) { return garbled }
 
-      } else {
-        return URL.create(content)
-          .then(() => res.render('index', { content }))
-          .catch((error) => console.log(error))
-
+      while (garbled === item.garbled) {
+        garbled = generateGarbled()
       }
+      return garbled
     })
+    .then((garbled) => {
+      const content = {
+        garbled: garbled,
+        url: req.body.url
+      }
+      return content
+    })
+    .then((content) => {
+      URL.findOne({ url: content.url })
+        .lean()
+        .then((item) => {
+          // 輸入相同網址時，回傳一樣的縮址。
+          if (item) {
+            return res.render('index', { content: item })
+
+          } else {
+            return URL.create(content)
+              .then(() => res.render('index', { content }))
+              .catch((error) => console.log(error))
+          }
+        })
+    })
+    .catch((error) => console.log(error))
 })
 
 module.exports = router
