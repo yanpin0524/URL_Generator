@@ -46,4 +46,11 @@ router.post('/', (req, res) => {
     .catch((error) => console.log(error))
 })
 
+router.get('/:urlGarbled', (req, res) => {
+  const urlGarbled = req.params.urlGarbled
+  URL.findOne({ garbled: urlGarbled })
+    .lean()
+    .then((item) => res.redirect(item.url))
+})
+
 module.exports = router
