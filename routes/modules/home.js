@@ -39,11 +39,17 @@ router.post('/', (req, res) => {
           } else {
             return URL.create(content)
               .then(() => res.render('index', { content }))
-              .catch((error) => console.log(error))
+              .catch((error) => {
+                console.log(error)
+                res.render('error', { error: error.message })
+              })
           }
         })
     })
-    .catch((error) => console.log(error))
+    .catch((error) => {
+      console.log(error)
+      res.render('error', { error: error.message })
+    })
 })
 
 router.get('/:urlGarbled', (req, res) => {

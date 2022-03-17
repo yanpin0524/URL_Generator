@@ -4,11 +4,13 @@ const Schema = mongoose.Schema
 const urlSchema = new Schema({
   url: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   garbled: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   }
 })
 
